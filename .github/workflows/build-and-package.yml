@@ -53,7 +53,7 @@ jobs:
 
     - name: Copy to staging directory
       run: |
-          cd ..
+          ls -lah
           mkdir staging_app
           cp -v ${{ steps.version_information.outputs.tar_name }} staging_app/
           cp -v ${{ steps.version_information.outputs.tar_name }}.sha256 staging_app/
