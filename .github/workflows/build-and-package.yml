@@ -49,7 +49,7 @@ jobs:
     - name: Set build number app.conf
       run: |
           ls -l TA-routeros/default/app.conf
-          sed -i -e "s/replacebuild/${{ steps.version_information.outputs.build_number }}/g" TA-routeros/default/app.conf
+          sed -i -e "s/replacebuild/${{ env.build_number }}/g" TA-routeros/default/app.conf
           cat TA-routeros/default/app.conf
 
     - name: Create tar file
