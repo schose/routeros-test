@@ -1,0 +1,20 @@
+name: TA-routeros - Build app
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+        name: TA-routeros_092.tar.gz
+        
+      - name: Display structure of downloaded files
+        run: ls -R
