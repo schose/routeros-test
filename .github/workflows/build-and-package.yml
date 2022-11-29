@@ -62,7 +62,7 @@ jobs:
     - name: run appinspect
       uses: VatsalJagani/splunk-app-action@v1
       with:
-        app_dir: "my_splunk_app"
+        app_dir: "TA-routeros"
         app_build_name: "app"
         splunkbase_username: ${{ secrets.SPLUNKBASE_USERNAME }}
         splunkbase_password: ${{ secrets.SPLUNKBASE_PASSWORD }}
