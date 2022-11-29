@@ -40,7 +40,7 @@ jobs:
 
            artifact_name_prefix="TA-routeros_${app_version_short}_${build_number}"
            echo "artifact_name_prefix=$artifact_name_prefix"
-          echo "artifact_name_prefix=$artifact_name_prefix" >> $GITHUB_ENV
+           echo "artifact_name_prefix=$artifact_name_prefix" >> $GITHUB_ENV
 
            echo "::set-output name=artifact_name_prefix::$artifact_name_prefix"
            tar_name="TA-routeros_$app_version_short.tar.gz"
