@@ -42,7 +42,6 @@ jobs:
            echo "artifact_name_prefix=$artifact_name_prefix"
            echo "artifact_name_prefix=$artifact_name_prefix" >> $GITHUB_ENV
 
-           echo "::set-output name=artifact_name_prefix::$artifact_name_prefix"
            tar_name="TA-routeros_$app_version_short.tar.gz"
            echo "tar_name=$tar_name"
            echo "tar_name=$tar_name" >> >> $GITHUB_ENV
