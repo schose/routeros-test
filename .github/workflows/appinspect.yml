@@ -11,7 +11,7 @@ jobs:
       - name: download artifact
         uses: actions/download-artifact@v3
         with:
-          path: TA-routeros_091_3576035203-1_app-package
+          name: TA-routeros_091_3576035203-1_app-package
         
         
       - name: Display structure of downloaded files
