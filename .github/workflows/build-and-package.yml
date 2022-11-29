@@ -2,7 +2,7 @@ name: TA-routeros - Build app
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" , "dev-art"]
   pull_request:
     branches: [ "main" ]
 
