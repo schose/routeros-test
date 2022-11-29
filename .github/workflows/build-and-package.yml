@@ -57,9 +57,10 @@ jobs:
           mkdir staging_app
           cp -v ${{ steps.version_information.outputs.tar_name }} staging_app/
           cp -v ${{ steps.version_information.outputs.tar_name }}.sha256 staging_app/
+          ls -lah
 
     - name: Upload artifacts - app
       uses: actions/upload-artifact@v3
       with:
        name: ${{ steps.version_information.outputs.artifact_name_prefix }}_app-package
-       path: /home/runner/work/visualization_toolbox/staging_app
+       path: /home/runner/work/routeros-test/staging_app
