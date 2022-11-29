@@ -26,17 +26,17 @@ jobs:
     - name: Version information
       id: version_information
       run: |
-           app_version=$(cat default/app.conf | grep -o 'version =.*' | head -1 |cut -f2- -d=)
+           app_version=$(cat TA-routeros/default/app.conf | grep -o 'version =.*' | head -1 |cut -f2- -d=)
            echo "App version: " $app_version
            echo "::set-output name=app_version::$app_version"
            build_number="${{ github.run_id }}-${{ github.run_attempt }}"
            echo "Build number: $build_number"
            echo "::set-output name=build_number::$build_number"
            app_version_short=$(echo $app_version | sed 's/\.//g')
-           artifact_name_prefix="visualization_toolbox_${app_version_short}_${build_number}"
+           artifact_name_prefix="TA-routeros_${app_version_short}_${build_number}"
            echo "Artifact name: $artifact_name_prefix"
            echo "::set-output name=artifact_name_prefix::$artifact_name_prefix"
-           tar_name="visualization_toolbox_$app_version_short.tar.gz"
+           tar_name="TA-routeros_$app_version_short.tar.gz"
            echo "Tar.gz name: $tar_name"
            echo "::set-output name=tar_name::$tar_name"
            
@@ -57,7 +57,7 @@ jobs:
           mkdir staging_app
           cp -v ${{ steps.version_information.outputs.tar_name }} staging_app/
           cp -v ${{ steps.version_information.outputs.tar_name }}.sha256 staging_app/
-          
+
     - name: Upload artifacts - app
       uses: actions/upload-artifact@v3
       with:
