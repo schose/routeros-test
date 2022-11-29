@@ -39,25 +39,29 @@ jobs:
            tar_name="TA-routeros_$app_version_short.tar.gz"
            echo "Tar.gz name: $tar_name"
            echo "::set-output name=tar_name::$tar_name"
-           
-    - name: Create tar file
-      id: create_tar_file
-      run: |
-          tar -czvf ${{ steps.version_information.outputs.tar_name }} \
-          TA-routeros/
-          tar_checksum=$(sha256sum ${{ steps.version_information.outputs.tar_name }} | awk '{print $1}')
-          echo "Checksums:"
-          find . -maxdepth 1 -type f -exec sha256sum {} \;
-          echo "::set-output name=tar_checksum::$tar_checksum"
-          sha256sum ${{ steps.version_information.outputs.tar_name }} > ${{ steps.version_information.outputs.tar_name }}.sha256
 
-    - name: Copy to staging directory
+    - name: Set build number app.conf
       run: |
-          ls -lah
-          mkdir staging_app
-          cp -v ${{ steps.version_information.outputs.tar_name }} staging_app/
-          cp -v ${{ steps.version_information.outputs.tar_name }}.sha256 staging_app/
-          ls -lah
+          sed -i -e "s/replacebuild/${{ steps.version_information.outputs.build_number }}/g" TA-routeros/default/app.conf
+
+    # - name: Create tar file
+    #   id: create_tar_file
+    #   run: |
+    #       tar -czvf ${{ steps.version_information.outputs.tar_name }} \
+    #       TA-routeros/
+    #       tar_checksum=$(sha256sum ${{ steps.version_information.outputs.tar_name }} | awk '{print $1}')
+    #       echo "Checksums:"
+    #       find . -maxdepth 1 -type f -exec sha256sum {} \;
+    #       echo "::set-output name=tar_checksum::$tar_checksum"
+    #       sha256sum ${{ steps.version_information.outputs.tar_name }} > ${{ steps.version_information.outputs.tar_name }}.sha256
+
+    # - name: Copy to staging directory
+    #   run: |
+    #       ls -lah
+    #       mkdir staging_app
+    #       cp -v ${{ steps.version_information.outputs.tar_name }} staging_app/
+    #       cp -v ${{ steps.version_information.outputs.tar_name }}.sha256 staging_app/
+    #       ls -lah
 
     # test..
     - name: run appinspect
