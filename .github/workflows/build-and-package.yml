@@ -62,21 +62,13 @@ jobs:
           find . -maxdepth 1 -type f -exec sha256sum {} \;
           sha256sum ${{ env.tar_name }} > ${{ env.tar_name }}.sha256
 
-    # - name: Copy to staging directory
-    #   run: |
-    #       ls -lah
-    #       mkdir staging_app
-    #       cp -v ${{ steps.version_information.outputs.tar_name }} staging_app/
-    #       cp -v ${{ steps.version_information.outputs.tar_name }}.sha256 staging_app/
-    #       ls -lah
-
-    # # test..
-    # - name: run appinspect
-    #   uses: VatsalJagani/splunk-app-action@v1
-    #   with:
-    #     app_dir: "TA-routeros"
-    #     splunkbase_username: ${{ secrets.SPLUNKBASE_USERNAME }}
-    #     splunkbase_password: ${{ secrets.SPLUNKBASE_PASSWORD }}
+    # run appinspect
+    - name: run appinspect
+      uses: VatsalJagani/splunk-app-action@v1
+      with:
+        app_dir: "TA-routeros"
+        splunkbase_username: ${{ secrets.SPLUNKBASE_USERNAME }}
+        splunkbase_password: ${{ secrets.SPLUNKBASE_PASSWORD }}
 
     - name: Upload artifacts - app
       uses: actions/upload-artifact@v3
