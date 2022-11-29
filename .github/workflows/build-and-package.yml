@@ -34,9 +34,9 @@ jobs:
            echo "build_number=$build_number" 
            echo "build_number=$build_number" >> $GITHUB_ENV
 
-          #  app_version_short=$(echo $app_version | sed 's/\.//g')
-          #  echo "app_version_short=$app_version_short"
-          #  echo "app_version_short=$app_version_short"  >> $GITHUB_ENV
+           app_version_short=$(echo $app_version | sed 's/\.//g')
+           echo "app_version_short=$app_version_short"
+           echo "app_version_short=$app_version_short"  >> $GITHUB_ENV
 
           #  artifact_name_prefix="TA-routeros_${app_version_short}_${build_number}"
           #  echo "artifact_name_prefix=$artifact_name_prefix"
