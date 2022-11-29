@@ -63,4 +63,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
        name: ${{ steps.version_information.outputs.artifact_name_prefix }}_app-package
-       path: /home/runner/work/routeros-test/staging_app
+       path: ${{ steps.version_information.outputs.tar_name }}
