@@ -1,0 +1,53 @@
+name: TA-routeros - Build app
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      app_version: ${{ steps.version_information.outputs.app_version }}
+      build_number: ${{ steps.version_information.outputs.build_number }}
+      artifact_name_prefix: ${{ steps.version_information.outputs.artifact_name_prefix }}
+      tar_name: ${{ steps.version_information.outputs.tar_name }}
+      tar_sha256: ${{ steps.XYZ.outputs.tar_name }}
+      
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Write app version and workflow id to variables for later usage
+    - name: Version information
+      id: version_information
+      run: |
+           app_version=$(cat default/app.conf | grep -o 'version =.*' | head -1 |cut -f2- -d=)
+           echo "App version: " $app_version
+           echo "::set-output name=app_version::$app_version"
+           build_number="${{ github.run_id }}-${{ github.run_attempt }}"
+           echo "Build number: $build_number"
+           echo "::set-output name=build_number::$build_number"
+           app_version_short=$(echo $app_version | sed 's/\.//g')
+           artifact_name_prefix="visualization_toolbox_${app_version_short}_${build_number}"
+           echo "Artifact name: $artifact_name_prefix"
+           echo "::set-output name=artifact_name_prefix::$artifact_name_prefix"
+           tar_name="visualization_toolbox_$app_version_short.tar.gz"
+           echo "Tar.gz name: $tar_name"
+           echo "::set-output name=tar_name::$tar_name"
+           
+    - name: Create tar file
+      id: create_tar_file
+      run: |
+          cd ..
+          tar -czvf ${{ steps.version_information.outputs.tar_name }} \
+          TA-routeros/
+          tar_checksum=$(sha256sum ${{ steps.version_information.outputs.tar_name }} | awk '{print $1}')
+          echo "Checksums:"
+          find . -maxdepth 1 -type f -exec sha256sum {} \;
+          echo "::set-output name=tar_checksum::$tar_checksum"
+          sha256sum ${{ steps.version_information.outputs.tar_name }} > ${{ steps.version_information.outputs.tar_name }}.sha256
