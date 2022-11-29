@@ -30,9 +30,9 @@ jobs:
            echo "app_version=$app_version"
            echo "app_version=$app_version" >> $GITHUB_ENV
            
-          #  build_number="${{ github.run_id }}${{ github.run_attempt }}"
-          #  echo "build_number=$build_number" 
-          #  echo "build_number=$build_number" >> $GITHUB_ENV
+           build_number="${{ github.run_id }}${{ github.run_attempt }}"
+           echo "build_number=$build_number" 
+           echo "build_number=$build_number" >> $GITHUB_ENV
 
           #  app_version_short=$(echo $app_version | sed 's/\.//g')
           #  echo "app_version_short=$app_version_short"
