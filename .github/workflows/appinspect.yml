@@ -8,9 +8,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/download-artifact@v3
+      - name: TA-routeros_092.tar.gz
+        uses: actions/download-artifact@v3
         with:
-        name: TA-routeros_092.tar.gz
+          path: TA-routeros_092.tar.gz
+        
         
       - name: Display structure of downloaded files
         run: ls -R
