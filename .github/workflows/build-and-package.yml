@@ -38,13 +38,13 @@ jobs:
            echo "app_version_short=$app_version_short"
            echo "app_version_short=$app_version_short"  >> $GITHUB_ENV
 
-          #  artifact_name_prefix="TA-routeros_${app_version_short}_${build_number}"
-          #  echo "artifact_name_prefix=$artifact_name_prefix"
-          #  echo "artifact_name_prefix=$artifact_name_prefix" >> $GITHUB_ENV
+           artifact_name_prefix="TA-routeros_${app_version_short}_${build_number}"
+           echo "artifact_name_prefix=$artifact_name_prefix"
+           echo "artifact_name_prefix=$artifact_name_prefix" >> $GITHUB_ENV
 
-          #  tar_name="TA-routeros_$app_version_short.tar.gz"
-          #  echo "tar_name=$tar_name"
-          #  echo "tar_name=$tar_name" >> >> $GITHUB_ENV
+           tar_name="TA-routeros_$app_version_short.tar.gz"
+           echo "tar_name=$tar_name"
+           echo "tar_name=$tar_name" >> $GITHUB_ENV
 
     - name: Set build number app.conf
       run: |
