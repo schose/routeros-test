@@ -59,14 +59,13 @@ jobs:
           cp -v ${{ steps.version_information.outputs.tar_name }}.sha256 staging_app/
           ls -lah
 
-    steps:
-      - name: run appinspect
-        uses: VatsalJagani/splunk-app-action@v1
-        with:
-          app_dir: "my_splunk_app"
-          app_build_name: "app"
-          splunkbase_username: ${{ secrets.SPLUNKBASE_USERNAME }}
-          splunkbase_password: ${{ secrets.SPLUNKBASE_PASSWORD }}
+    - name: run appinspect
+      uses: VatsalJagani/splunk-app-action@v1
+      with:
+        app_dir: "my_splunk_app"
+        app_build_name: "app"
+        splunkbase_username: ${{ secrets.SPLUNKBASE_USERNAME }}
+        splunkbase_password: ${{ secrets.SPLUNKBASE_PASSWORD }}
 
     - name: Upload artifacts - app
       uses: actions/upload-artifact@v3
