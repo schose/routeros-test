@@ -59,6 +59,7 @@ jobs:
           cp -v ${{ steps.version_information.outputs.tar_name }}.sha256 staging_app/
           ls -lah
 
+    # test..
     - name: run appinspect
       uses: VatsalJagani/splunk-app-action@v1
       with:
@@ -72,4 +73,5 @@ jobs:
       with:
        name: ${{ steps.version_information.outputs.artifact_name_prefix }}_app-package
        path: ${{ steps.version_information.outputs.tar_name }}
+    
 
