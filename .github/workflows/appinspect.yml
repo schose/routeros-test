@@ -1,4 +1,4 @@
-name: TA-routeros - Build app
+name: TA-routeros - appinspect
 
 on:
   push:
