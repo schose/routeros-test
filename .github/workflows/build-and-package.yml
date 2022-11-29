@@ -43,7 +43,6 @@ jobs:
     - name: Create tar file
       id: create_tar_file
       run: |
-          cd ..
           tar -czvf ${{ steps.version_information.outputs.tar_name }} \
           TA-routeros/
           tar_checksum=$(sha256sum ${{ steps.version_information.outputs.tar_name }} | awk '{print $1}')
