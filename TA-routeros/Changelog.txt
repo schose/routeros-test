@@ -7,3 +7,8 @@
 
 - works with python3 as default
 - testet on splunk 8.1
+
+## v0.9.2
+
+- tested with Splunk Enterprise v8.2, v9.0
+

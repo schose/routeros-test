@@ -2,7 +2,7 @@ name: TA-routeros - Build app
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" , "dev-art"]
   pull_request:
     branches: [ "main" ]
 
@@ -11,12 +11,12 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    outputs:
-      app_version: ${{ steps.version_information.outputs.app_version }}
-      build_number: ${{ steps.version_information.outputs.build_number }}
-      artifact_name_prefix: ${{ steps.version_information.outputs.artifact_name_prefix }}
-      tar_name: ${{ steps.version_information.outputs.tar_name }}
-      tar_sha256: ${{ steps.XYZ.outputs.tar_name }}
+    # outputs:
+    #   app_version: ${{ steps.version_information.outputs.app_version }}
+    #   build_number: ${{ steps.version_information.outputs.build_number }}
+    #   artifact_name_prefix: ${{ steps.version_information.outputs.artifact_name_prefix }}
+    #   tar_name: ${{ steps.version_information.outputs.tar_name }}
+    #   tar_sha256: ${{ steps.XYZ.outputs.tar_name }}
       
     steps:
     - name: Checkout repository
@@ -27,51 +27,54 @@ jobs:
       id: version_information
       run: |
            app_version=$(cat TA-routeros/default/app.conf | grep -o 'version =.*' | head -1 |cut -f2- -d=)
-           echo "App version: " $app_version
-           echo "::set-output name=app_version::$app_version"
-           build_number="${{ github.run_id }}-${{ github.run_attempt }}"
-           echo "Build number: $build_number"
-           echo "::set-output name=build_number::$build_number"
-           app_version_short=$(echo $app_version | sed 's/\.//g')
-           artifact_name_prefix="TA-routeros_${app_version_short}_${build_number}"
-           echo "Artifact name: $artifact_name_prefix"
-           echo "::set-output name=artifact_name_prefix::$artifact_name_prefix"
-           tar_name="TA-routeros_$app_version_short.tar.gz"
-           echo "Tar.gz name: $tar_name"
-           echo "::set-output name=tar_name::$tar_name"
+           echo "app_version=$app_version"
+           echo "app_version=$app_version" >> $GITHUB_ENV
            
+           build_number="${{ github.run_id }}${{ github.run_attempt }}"
+           echo "build_number=$build_number" 
+           echo "build_number=$build_number" >> $GITHUB_ENV
+
+           app_version_short=$(echo $app_version | sed 's/\.//g')
+           echo "app_version_short=$app_version_short"
+           echo "app_version_short=$app_version_short"  >> $GITHUB_ENV
+
+           artifact_name_prefix="TA-routeros_${app_version_short}_${build_number}"
+           echo "artifact_name_prefix=$artifact_name_prefix"
+           echo "artifact_name_prefix=$artifact_name_prefix" >> $GITHUB_ENV
+
+           tar_name="TA-routeros_$app_version_short.tar.gz"
+           echo "tar_name=$tar_name"
+           echo "tar_name=$tar_name" >> $GITHUB_ENV
+
+    - name: Set build number app.conf
+      run: |
+          ls -l TA-routeros/default/app.conf
+          sed -i -e "s/replacebuild/${{ env.build_number }}/g" TA-routeros/default/app.conf
+          cat TA-routeros/default/app.conf
+
     - name: Create tar file
       id: create_tar_file
       run: |
-          tar -czvf ${{ steps.version_information.outputs.tar_name }} \
+          tar -czvf ${{ env.tar_name }} \
           TA-routeros/
-          tar_checksum=$(sha256sum ${{ steps.version_information.outputs.tar_name }} | awk '{print $1}')
+          tar_checksum=$(sha256sum ${{ env.tar_name }} | awk '{print $1}')
           echo "Checksums:"
           find . -maxdepth 1 -type f -exec sha256sum {} \;
-          echo "::set-output name=tar_checksum::$tar_checksum"
-          sha256sum ${{ steps.version_information.outputs.tar_name }} > ${{ steps.version_information.outputs.tar_name }}.sha256
+          sha256sum ${{ env.tar_name }} > ${{ env.tar_name }}.sha256
 
-    - name: Copy to staging directory
-      run: |
-          ls -lah
-          mkdir staging_app
-          cp -v ${{ steps.version_information.outputs.tar_name }} staging_app/
-          cp -v ${{ steps.version_information.outputs.tar_name }}.sha256 staging_app/
-          ls -lah
-
-    # test..
-    - name: run appinspect
-      uses: VatsalJagani/splunk-app-action@v1
-      with:
-        app_dir: "TA-routeros"
-        splunkbase_username: ${{ secrets.SPLUNKBASE_USERNAME }}
-        splunkbase_password: ${{ secrets.SPLUNKBASE_PASSWORD }}
+    # # run appinspect
+    # - name: run appinspect
+    #   uses: VatsalJagani/splunk-app-action@v1
+    #   with:
+    #     app_dir: "TA-routeros"
+    #     splunkbase_username: ${{ secrets.SPLUNKBASE_USERNAME }}
+    #     splunkbase_password: ${{ secrets.SPLUNKBASE_PASSWORD }}
 
     - name: Upload artifacts - app
       uses: actions/upload-artifact@v3
       with:
-       name: ${{ steps.version_information.outputs.artifact_name_prefix }}_app-package
-       path: ${{ steps.version_information.outputs.tar_name }}
+       name: ${{ env.tar_name }}
+       path: ${{ env.tar_name }}
     
 
 #
