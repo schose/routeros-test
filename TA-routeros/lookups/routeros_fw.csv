@@ -3,5 +3,6 @@ drop,blocked
 dropped,blocked
 blocked,blocked
 accepted,allowed
-allowed,allowed
 accept,allowed
+allowed,allowed
+allow,allowed
