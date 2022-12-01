@@ -1,4 +1,4 @@
-name: TA-routeros - Build app
+name: appinspect
 
 on:
   workflow_dispatch:
