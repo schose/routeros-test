@@ -1,10 +1,7 @@
 name: TA-routeros - Build app
 
 on:
-  push:
-    branches: [ "main" , "dev-art"]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -51,30 +48,11 @@ jobs:
           ls -l TA-routeros/default/app.conf
           sed -i -e "s/replacebuild/${{ env.build_number }}/g" TA-routeros/default/app.conf
           cat TA-routeros/default/app.conf
-
-    - name: Create tar file
-      id: create_tar_file
-      run: |
-          tar -czvf ${{ env.tar_name }} \
-          TA-routeros/
-          tar_checksum=$(sha256sum ${{ env.tar_name }} | awk '{print $1}')
-          echo "Checksums:"
-          find . -maxdepth 1 -type f -exec sha256sum {} \;
-          sha256sum ${{ env.tar_name }} > ${{ env.tar_name }}.sha256
-
-    # # run appinspect
-    # - name: run appinspect
-    #   uses: VatsalJagani/splunk-app-action@v1
-    #   with:
-    #     app_dir: "TA-routeros"
-    #     splunkbase_username: ${{ secrets.SPLUNKBASE_USERNAME }}
-    #     splunkbase_password: ${{ secrets.SPLUNKBASE_PASSWORD }}
-
-    - name: Upload artifacts - app
-      uses: actions/upload-artifact@v3
+    # run appinspect
+    - name: run appinspect
+      uses: VatsalJagani/splunk-app-action@v1
       with:
-       name: ${{ env.tar_name }}
-       path: ${{ env.tar_name }}
-    
+        app_dir: "TA-routeros"
+        splunkbase_username: ${{ secrets.SPLUNKBASE_USERNAME }}
+        splunkbase_password: ${{ secrets.SPLUNKBASE_PASSWORD }}
 
-#
